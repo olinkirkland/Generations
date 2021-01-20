@@ -1,0 +1,109 @@
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+
+@font-face {
+    src: url("/assets/fonts/ChanticleerRomanNF.ttf");
+    fontFamily: Body;
+    fontWeight: normal;
+    fontStyle: normal;
+}
+
+@font-face {
+    src: url("/assets/fonts/ChanticleerRomanNF-Bold.ttf");
+    fontFamily: Karla;
+    fontWeight: bold;
+    fontStyle: normal;
+}
+
+/*
+Labels
+ */
+
+s|Label {
+    font-family: Body;
+    color: #5f656d;
+    fontSize: 12;
+    paddingTop: 2;
+}
+
+s|Label.header {
+    fontWeight: bold;
+    fontSize: 16;
+}
+
+s|TextInput {
+    skinClass: ClassReference("skins.TextInputSkin");
+    focusAlpha: 0;
+}
+
+s|RichEditableText {
+    fontFamily: Karla;
+    color: #000000;
+    fontSize: 12;
+    paddingTop: 1;
+}
+
+s|CheckBox {
+    skinClass: ClassReference("skins.CheckBoxSkin");
+}
+
+/*
+Scrollbars
+ */
+
+s|VScrollBar {
+    skinClass: ClassReference("skins.scrollbars.VScrollBarSkin");
+}
+
+s|HScrollBar {
+    skinClass: ClassReference("skins.scrollbars.HScrollBarSkin");
+}
+
+.scrollBar {
+    thumb_color: #d3d3d3;
+    track_color: #eeeeee;
+}
+
+/*
+Sliders
+ */
+
+s|HSlider {
+    skinClass: ClassReference("skins.sliders.HSliderSkin");
+}
+
+.slider {
+    thumb_color: #d3d3d3;
+    track_color: #eeeeee;
+}
+
+/*
+Buttons
+ */
+
+s|Button {
+    skinClass: ClassReference("skins.buttons.ButtonSkin");
+}
+
+s|ToggleButton {
+    skinClass: ClassReference("skins.buttons.ToggleButtonSkin");
+}
+
+/*
+Miscellaneous
+ */
+
+s|Panel {
+    skinClass: ClassReference("skins.PanelSkin");
+}
+
+s|DropDownList {
+    skinClass: ClassReference("skins.DropDownListSkin");
+}
+
+global {
+    modalTransparency: 0.4;
+    modalTransparencyBlur: 0;
+    modalTransparencyColor: black;
+    modalTransparencyDuration: 0;
+}

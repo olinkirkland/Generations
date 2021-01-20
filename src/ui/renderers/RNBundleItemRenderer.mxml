@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                xmlns:s="library://ns.adobe.com/flex/spark"
+                creationComplete="onCreationComplete(event)"
+                autoDrawBackground="false"
+                width="100%"
+                height="100%">
+    <fx:Script><![CDATA[
+        import global.Icons;
+
+        import mx.collections.ArrayCollection;
+
+        import mx.events.FlexEvent;
+
+        public static const BUNDLE_REMOVED:String = "bundleRemoved";
+        public static const BUNDLE_CLONED:String = "bundleCloned";
+        public static const BUNDLE_CHANGED:String = "bundleChanged";
+
+        public var bundle:RNBundle;
+
+        private function onCreationComplete(event:FlexEvent):void
+        {
+            listItems.addEventListener(RNItemItemRenderer.ITEM_REMOVED, onRemoved);
+            listItems.addEventListener(RNItemItemRenderer.ITEM_CLONED, onCloned);
+        }
+
+        private function onRemoved(event:Event):void
+        {
+            var renderer:RNItemItemRenderer = event.target as RNItemItemRenderer;
+            for (var i:int = 0; i < bundle.items.length; i++)
+            {
+                if (bundle.items[i] == renderer.item)
+                {
+                    bundle.items.removeAt(i);
+                    break;
+                }
+            }
+
+            dispatchEvent(new Event(BUNDLE_CHANGED));
+
+            validateView();
+        }
+
+        private function onCloned(event:Event):void
+        {
+            var renderer:RNItemItemRenderer = event.target as RNItemItemRenderer;
+            for (var i:int = 0; i < bundle.items.length; i++)
+            {
+                if (bundle.items[i] == renderer.item)
+                {
+                    bundle.items.insertAt(i + 1, PackageFactory.objToRNItem(renderer.item.toObject()));
+                    break;
+                }
+            }
+
+            dispatchEvent(new Event(BUNDLE_CHANGED));
+
+            validateView();
+        }
+
+        private function onChange(event:Event):void
+        {
+            dispatchEvent(new Event(BUNDLE_CHANGED));
+
+            validateModel();
+
+            validateView();
+        }
+
+        override public function set data(value:Object):void
+        {
+            if (!value)
+                return;
+
+            bundle = value as RNBundle;
+
+            validateView();
+        }
+
+        private function onClickAddItem(event:MouseEvent):void
+        {
+            bundle.items.push(new RNItem());
+
+            validateView();
+        }
+
+        private function validateModel():void
+        {
+            bundle.name = inputName.text;
+            bundle.id = inputId.text;
+            bundle.description = inputDescription.text;
+            bundle.promoted = checkBoxPromoted.selected;
+        }
+
+        private function validateView():void
+        {
+            labelIndex.text = "Bundle #" + itemIndex;
+            inputName.text = bundle.name;
+            inputId.text = bundle.id;
+            inputDescription.text = bundle.description;
+            checkBoxPromoted.selected = bundle.promoted;
+
+            labelItems.text = "Items (" + bundle.items.length + ")";
+
+            listItems.dataProvider = new ArrayCollection();
+            for each (var item:RNItem in bundle.items)
+                listItems.dataProvider.addItem(item);
+        }
+
+        private function onClickRemove(event:MouseEvent):void
+        {
+            dispatchEvent(new Event(BUNDLE_REMOVED, true));
+        }
+
+        private function onClickClone(event:MouseEvent):void
+        {
+            dispatchEvent(new Event(BUNDLE_CLONED, true));
+        }
+        ]]>
+    </fx:Script>
+
+    <s:Panel width="100%"
+             height="100%"
+             skinClass="skins.PanelSkinWhite">
+        <s:VGroup width="100%"
+                  height="100%">
+            <s:HGroup width="100%"
+                      verticalAlign="middle">
+                <s:Label id="labelIndex"
+                         fontWeight="bold" />
+                <s:Spacer width="100%" />
+                <s:Button id="buttonClone"
+                          skinClass="skins.buttons.ButtonOnlyIconSkin"
+                          icon="{Icons.copy}"
+                          click="onClickClone(event)" />
+                <s:Button id="buttonRemove"
+                          skinClass="skins.buttons.ButtonOnlyIconSkin"
+                          icon="{Icons.remove}"
+                          click="onClickRemove(event)" />
+            </s:HGroup>
+            <s:TextInput id="inputName"
+                         width="100%"
+                         prompt="name"
+                         change="onChange(event)" />
+            <s:TextInput id="inputId"
+                         width="100%"
+                         prompt="id"
+                         change="onChange(event)" />
+            <s:TextInput id="inputPrice"
+                         width="100%"
+                         prompt="price"
+                         change="onChange(event)" />
+            <s:CheckBox id="checkBoxPromoted"
+                        width="100%"
+                        label="promoted"
+                        change="onChange(event)" />
+            <s:TextInput id="inputDescription"
+                         width="100%"
+                         prompt="description"
+                         change="onChange(event)" />
+
+            <s:Spacer height="5" />
+
+            <s:VGroup width="100%"
+                      height="100%">
+                <s:HGroup width="100%"
+                          verticalAlign="middle">
+                    <s:Label id="labelItems"
+                             fontWeight="bold" />
+                    <s:Spacer width="100%" />
+                    <s:Button id="buttonAddItem"
+                              icon="{Icons.add}"
+                              label="Add Item"
+                              click="onClickAddItem(event)" />
+                </s:HGroup>
+
+                <s:List id="listItems"
+                        width="100%"
+                        height="100%"
+                        itemRenderer="ui.renderers.RNItemItemRenderer"
+                        contentBackgroundAlpha="0"
+                        borderVisible="false"
+                        useVirtualLayout="false"
+                        horizontalScrollPolicy="off"
+                        verticalScrollPolicy="auto">
+                    <s:layout>
+                        <s:VerticalLayout gap="5" />
+                    </s:layout>
+                </s:List>
+            </s:VGroup>
+
+        </s:VGroup>
+    </s:Panel>
+</s:ItemRenderer>

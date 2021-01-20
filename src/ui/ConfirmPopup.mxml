@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<ui:Popup xmlns:fx="http://ns.adobe.com/mxml/2009"
+          xmlns:s="library://ns.adobe.com/flex/spark"
+          xmlns:ui="ui.*"
+          width="240">
+
+    <fx:Script><![CDATA[
+        import mx.events.FlexEvent;
+
+        private var _callbackConfirm:Function = null;
+        private var _callbackCancel:Function = null;
+
+        private var _header:String = "Confirm";
+        private var _description:String = "Are you sure?";
+
+        private var _textConfirm:String = "Confirm";
+        private var _textCancel:String = "Cancel";
+
+        override public function onCreationComplete(event:FlexEvent):void
+        {
+            super.onCreationComplete(event);
+        }
+
+        public function set header(value:String):void
+        {
+            _header = value;
+        }
+
+        public function set description(value:String):void
+        {
+            _description = value;
+        }
+
+        public function set textConfirm(value:String):void
+        {
+            _textConfirm = value;
+        }
+
+        public function set textCancel(value:String):void
+        {
+            _textCancel = value;
+        }
+
+        public function set onConfirm(value:Function):void
+        {
+            _callbackConfirm = value;
+        }
+
+        public function set onCancel(value:Function):void
+        {
+            _callbackCancel = value;
+        }
+
+        private function cancelAndClose(event:MouseEvent):void
+        {
+            if (_callbackCancel != null) _callbackCancel.apply();
+            close();
+        }
+
+        private function confirmAndClose(event:MouseEvent):void
+        {
+            if (_callbackConfirm != null) _callbackConfirm.apply();
+            close();
+        }
+        ]]>
+    </fx:Script>
+
+    <s:VGroup gap="10"
+              width="100%">
+
+        <s:HGroup width="100%"
+                  verticalAlign="middle">
+            <s:Label id="labelHeader"
+                     text="{_header}"
+                     width="100%"
+                     styleName="header" />
+        </s:HGroup>
+
+        <s:Panel width="100%">
+            <s:Label id="labelDescription"
+                     text="{_description}"
+                     width="100%" />
+        </s:Panel>
+
+        <s:HGroup width="100%"
+                  horizontalAlign="right">
+            <s:Button id="buttonCancel"
+                      label="{_textCancel}"
+                      click="cancelAndClose(event)" />
+            <s:Button id="buttonConfirm"
+                      label="{_textConfirm}"
+                      click="confirmAndClose(event)" />
+        </s:HGroup>
+
+    </s:VGroup>
+</ui:Popup>

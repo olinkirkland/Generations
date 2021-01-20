@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                xmlns:s="library://ns.adobe.com/flex/spark"
+                creationComplete="onCreationComplete(event)"
+                autoDrawBackground="false"
+                width="100%">
+    <fx:Script><![CDATA[
+        import global.Icons;
+
+        import mx.events.FlexEvent;
+
+        public static const ITEM_REMOVED:String = "itemRemoved";
+        public static const ITEM_CLONED:String = "itemCloned";
+
+        public var item:RNItem;
+
+        private function onCreationComplete(event:FlexEvent):void
+        {
+        }
+
+        override public function set data(value:Object):void
+        {
+            if (!value)
+                return;
+
+            item = value as RNItem;
+
+            validateView();
+        }
+
+        private function onClickToggleItems(event:MouseEvent):void
+        {
+            item.rendererExpanded = !item.rendererExpanded;
+
+            validateView();
+        }
+
+        private function onChange(event:Event):void
+        {
+            validateModel();
+            validateView();
+        }
+
+        private function validateModel():void
+        {
+            item.name = inputName.text;
+            item.image = inputImage.text;
+            item.quantity = inputQuantity.text;
+            item.display = inputDisplay.text;
+        }
+
+        private function validateView():void
+        {
+            buttonToggle.label = item.name + (item.display.length > 0 ? (" (" + item.display + ")") : "");
+            groupProperties.visible = groupProperties.includeInLayout = item.rendererExpanded;
+
+            inputName.text = item.name;
+            inputImage.text = item.image;
+            inputQuantity.text = item.quantity;
+            inputDisplay.text = item.display;
+
+            buttonToggle.setStyle("icon", groupProperties.visible ? Icons.collapse : Icons.expand);
+        }
+
+        private function onClickRemove(event:MouseEvent):void
+        {
+            dispatchEvent(new Event(ITEM_REMOVED, true));
+        }
+
+        private function onClickClone(event:MouseEvent):void
+        {
+            dispatchEvent(new Event(ITEM_CLONED, true));
+        }
+        ]]>
+    </fx:Script>
+
+    <s:VGroup width="100%">
+        <s:HGroup width="100%">
+            <s:Button id="buttonToggle"
+                      width="100%"
+                      icon="{Icons.collapse}"
+                      skinClass="skins.buttons.ButtonSkinFullWidth"
+                      click="onClickToggleItems(event)" />
+            <s:Button id="buttonClone"
+                      skinClass="skins.buttons.ButtonOnlyIconSkin"
+                      icon="{Icons.copy}"
+                      click="onClickClone(event)" />
+            <s:Button id="buttonRemove"
+                      skinClass="skins.buttons.ButtonOnlyIconSkin"
+                      icon="{Icons.remove}"
+                      click="onClickRemove(event)" />
+        </s:HGroup>
+        <s:Panel id="groupProperties"
+                 width="100%"
+                 visible="false">
+            <s:VGroup width="100%">
+                <s:TextInput id="inputName"
+                             width="100%"
+                             prompt="name"
+                             change="onChange(event)" />
+                <s:TextInput id="inputImage"
+                             width="100%"
+                             prompt="image"
+                             change="onChange(event)" />
+                <s:TextInput id="inputQuantity"
+                             width="100%"
+                             prompt="quantity"
+                             change="onChange(event)" />
+                <s:TextInput id="inputDisplay"
+                             width="100%"
+                             prompt="display"
+                             change="onChange(event)" />
+            </s:VGroup>
+        </s:Panel>
+    </s:VGroup>
+
+</s:ItemRenderer>

@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                xmlns:s="library://ns.adobe.com/flex/spark"
+                creationComplete="onCreationComplete(event)"
+                autoDrawBackground="false">
+    <fx:Script><![CDATA[
+        import global.Color;
+
+        import mx.events.FlexEvent;
+
+        private var item:Object;
+        public var color:uint;
+
+        private function onCreationComplete(event:FlexEvent):void
+        {
+        }
+
+        override public function set data(value:Object):void
+        {
+            if (!value)
+                return;
+
+            item = value;
+
+            if (item.hasOwnProperty("color"))
+                color = item.color;
+            else if (item.hasOwnProperty("name"))
+                color = Color.stringToLightColor(item.name);
+            else
+                color = Math.random() * 0xffffff;
+
+            fillSolidColor.color = color;
+        }
+        ]]>
+    </fx:Script>
+
+    <s:HGroup gap="5"
+              padding="5">
+        <s:VGroup>
+            <s:HGroup verticalAlign="middle">
+                <s:Rect width="15"
+                        height="15"
+                        radiusX="3"
+                        radiusY="3">
+                    <s:stroke>
+                        <s:SolidColorStroke color="{Color.black}"
+                                            alpha=".3" />
+                    </s:stroke>
+                    <s:fill>
+                        <s:SolidColor id="fillSolidColor" />
+                    </s:fill>
+                </s:Rect>
+                <s:Label id="labelDisplay" />
+            </s:HGroup>
+        </s:VGroup>
+    </s:HGroup>
+</s:ItemRenderer>

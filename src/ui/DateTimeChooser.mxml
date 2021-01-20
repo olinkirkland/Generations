@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009"
+         xmlns:s="library://ns.adobe.com/flex/spark"
+         skinClass="skins.PanelSkinPopup"
+         creationComplete="onCreationComplete(event)">
+    <s:VGroup width="100%">
+        <s:HGroup width="100%">
+            <s:DropDownList id="dropDownMonth"
+                            width="100%"
+                            dataProvider="{months}"
+                            change="onChangeDropDownMonth(event)" />
+            <s:DropDownList id="dropDownDay"
+                            width="40"
+                            dataProvider="{days}" />
+            <s:DropDownList id="dropDownYear"
+                            width="60"
+                            dataProvider="{years}" />
+        </s:HGroup>
+
+        <s:HGroup width="100%"
+                  verticalAlign="middle"
+                  gap="7">
+            <s:Image source="{Icons.clock}"
+                     width="16"
+                     height="16"
+                     alpha=".5" />
+            <s:TextInput id="inputHours"
+                         width="30"
+                         skinClass="skins.TextInputSkinCenteredNoPrompt"
+                         restrict="[0-9]"
+                         change="onChangeHours(event)"
+                         focusOut="onFocusOutHours(event)" />
+            <s:Label text=":" />
+            <s:TextInput id="inputMinutes"
+                         width="30"
+                         skinClass="skins.TextInputSkinCenteredNoPrompt"
+                         restrict="[0-9]"
+                         change="onChangeMinutes(event)"
+                         focusOut="onFocusOutMinutes(event)" />
+            <s:TextInput id="inputSeconds"
+                         width="30"
+                         skinClass="skins.TextInputSkinCenteredNoPrompt"
+                         restrict="[0-9]"
+                         change="onChangeSeconds(event)"
+                         focusOut="onFocusOutSeconds(event)" />
+        </s:HGroup>
+    </s:VGroup>
+    <fx:Script><![CDATA[
+        import global.Icons;
+        import global.Util;
+
+        import mx.collections.ArrayCollection;
+
+        import mx.events.FlexEvent;
+
+        import spark.events.IndexChangeEvent;
+
+        import spark.events.TextOperationEvent;
+
+        private var days:ArrayCollection = new ArrayCollection();
+        private var months:ArrayCollection = new ArrayCollection();
+        private var years:ArrayCollection = new ArrayCollection();
+
+        private function onCreationComplete(event:FlexEvent):void
+        {
+            months.source = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+            determineYears();
+            determineDays();
+
+            onChangeHours(null);
+            onChangeMinutes(null);
+            onChangeSeconds(null);
+            onFocusOutHours(null);
+            onFocusOutMinutes(null);
+            onFocusOutSeconds(null);
+        }
+
+        private function determineYears():void
+        {
+            var startingYear:int = 2020;
+            var currentYear:int = new Date().fullYear;
+
+            // Add years from starting year to 3 years after current year
+            years.removeAll();
+            for (var i:int = startingYear; i < currentYear + 3; i++)
+                years.addItem(i);
+        }
+
+        private function determineDays():void
+        {
+            var daysCount:int = daysOfMonth(dropDownMonth.selectedIndex, dropDownYear.selectedItem % 4 == 0);
+
+            days.removeAll();
+            for (var i:int = 0; i < daysCount; i++)
+                days.addItem(i + 1);
+
+            function daysOfMonth(month:int, leap:Boolean):int
+            {
+                var days:int = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+                if (month == 2 && leap)
+                    days = 29;
+
+                return days;
+            }
+        }
+
+        private function onChangeDropDownMonth(event:IndexChangeEvent):void
+        {
+            determineDays();
+        }
+
+        private function onChangeHours(event:TextOperationEvent):void
+        {
+            var i:int = int(inputHours.text);
+            inputHours.text = String(Number.max(i, 0));
+            inputHours.text = String(Number.min(i, 23));
+        }
+
+        private function onChangeMinutes(event:TextOperationEvent):void
+        {
+            var i:int = int(inputMinutes.text);
+            inputMinutes.text = String(Number.max(i, 0));
+            inputMinutes.text = String(Number.min(i, 60));
+        }
+
+        private function onChangeSeconds(event:TextOperationEvent):void
+        {
+            var i:int = int(inputSeconds.text);
+            inputSeconds.text = String(Number.max(i, 0));
+            inputSeconds.text = String(Number.min(i, 60));
+        }
+
+        private function onFocusOutHours(event:FocusEvent):void
+        {
+            inputHours.text = Util.addZeroToSingleDigitString(inputHours.text);
+        }
+
+        private function onFocusOutMinutes(event:FocusEvent):void
+        {
+            inputMinutes.text = Util.addZeroToSingleDigitString(inputMinutes.text);
+        }
+
+        private function onFocusOutSeconds(event:FocusEvent):void
+        {
+            inputSeconds.text = Util.addZeroToSingleDigitString(inputSeconds.text);
+        }
+
+        public function set date(date:Date):void
+        {
+            // Set date
+        }
+
+        public function get date():Date
+        {
+            // Get date
+            var d:Date = new Date();
+
+            return d;
+        }
+        ]]></fx:Script>
+</s:Panel>

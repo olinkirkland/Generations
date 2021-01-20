@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
+          xmlns:s="library://ns.adobe.com/flex/spark"
+          paddingLeft="5"
+          paddingRight="5"
+          height="100%">
+    <s:Line height="100%">
+        <s:stroke>
+            <s:SolidColorStroke weight="1"
+                                color="{color}"
+                                alpha=".2" />
+        </s:stroke>
+    </s:Line>
+    <fx:Script><![CDATA[
+        import global.Color;
+
+        [Bindable]
+        public var color:uint = Color.lightBody;
+        ]]></fx:Script>
+</s:HGroup>
