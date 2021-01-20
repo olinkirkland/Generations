@@ -3,5 +3,5 @@
     <fx:Script><![CDATA[
         import mx.controls.Alert;
         ]]></fx:Script>
-    <s:Button click="Alert.show('Hello, world')" label="Say Hello"/>
+    <s:Button click="Alert.show('RELEASE')" label="Say Hello"/>
 </s:Application>
