@@ -4,6 +4,17 @@
     <configurations>
       <configuration name="Generations" main-class="Main" output-file="Main.swf" output-folder="$MODULE_DIR$/out/production/Generations">
         <dependencies target-player="30.0">
+          <entries>
+            <entry library-id="ef82829e-7e25-4572-a69d-07c9db5b552a">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="b4f39388-66a2-417a-af40-6a44cd1ee9bd">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="fac5d7af-3fd5-4c90-8990-238b5bc01640">
+              <dependency linkage="Merged" />
+            </entry>
+          </entries>
           <sdk name="ApacheAirMerged" />
         </dependencies>
         <compiler-options />
@@ -21,5 +32,35 @@
     </content>
     <orderEntry type="jdk" jdkName="ApacheAirMerged" jdkType="Flex SDK Type (new)" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="ef82829e-7e25-4572-a69d-07c9db5b552a" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/libs/as3crypto.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="b4f39388-66a2-417a-af40-6a44cd1ee9bd" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/libs/greensock.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="fac5d7af-3fd5-4c90-8990-238b5bc01640" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/libs/PlayerIOClient.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
