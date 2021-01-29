@@ -42,7 +42,7 @@
             });
         }
 
-        private function onClickButtonClose(event:MouseEvent):void
+        private function onButtonClose(event:MouseEvent):void
         {
             if (popupOnClose)
                 PopupManager.open(popupOnClose);
@@ -50,7 +50,7 @@
                 PopupManager.close();
         }
 
-        private function onClickButtonSend(event:MouseEvent):void
+        private function onButtonSend(event:MouseEvent):void
         {
             sendCommand();
         }
@@ -86,7 +86,7 @@
             <s:Spacer width="100%"/>
             <s:Button id="buttonClose"
                       icon="{Icons.Exit}"
-                      click="onClickButtonClose(event)"/>
+                      click="onButtonClose(event)"/>
         </s:HGroup>
 
         <s:List id="list"
@@ -103,7 +103,7 @@
                          keyDown="onKeyDown(event)"/>
             <s:Button id="buttonSend"
                       icon="{Icons.Enter}"
-                      click="onClickButtonSend(event)"/>
+                      click="onButtonSend(event)"/>
         </s:HGroup>
     </s:VGroup>
 

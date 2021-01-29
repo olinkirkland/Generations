@@ -62,30 +62,12 @@
             Console.instance.log("Connected to server");
             Net.client = client;
 
-            var p:ConfirmPopup = new ConfirmPopup();
-            p.header = "Select Server Type";
-            p.description = "Select the server type you'd like to connect to.";
-            p.textConfirm = "Release";
-            p.textCancel = "Development";
-            p.callbackConfirm = useReleaseServer;
-            p.callbackCancel = useDevelopmentServer;
-            PopupManager.open(p);
-        }
-
-
-        private function useDevelopmentServer():void
-        {
-            Net.client.multiplayer.developmentServer = "127.0.0.1:8184";
-            joinRoom();
-        }
-
-        private function useReleaseServer():void
-        {
-            joinRoom();
+            openConnectionTypePopup();
         }
 
         private function joinRoom():void
         {
+            buttonToggleConnection.enabled = false;
             Net.client.multiplayer.createJoinRoom("myRoom", "Game", true, {}, {}, handleJoin, handleError);
         }
 
@@ -93,15 +75,22 @@
         {
             Net.connection = connection;
             Net.connection.addMessageHandler("*", handleMessages);
+            Net.connection.addDisconnectHandler(handleDisconnect);
+
+            buttonToggleConnection.enabled = true;
+            buttonToggleConnection.label = "Disconnect";
+        }
+
+        private function handleDisconnect():void
+        {
+            Net.connection.removeMessageHandler("*", handleMessages);
+            buttonToggleConnection.label = "Connect";
         }
 
         private function handleMessages(m:Message):void
         {
             switch (m.type)
             {
-//                case "Chat":
-//                    Console.instance.log("Player " + m.getString(0) + ": " + m.getString(1));
-//                    break;
                 default:
                     Console.instance.log(m.toString());
                     break;
@@ -144,6 +133,41 @@
             var p:ConsolePopup = new ConsolePopup();
             PopupManager.open(p);
         }
+
+        private function onButtonToggleConnection(event:MouseEvent):void
+        {
+            if (Net.connection.connected)
+            {
+                Net.connection.disconnect();
+                handleDisconnect();
+            } else
+            {
+                openConnectionTypePopup();
+            }
+        }
+
+        private function openConnectionTypePopup():void
+        {
+            var p:ConfirmPopup = new ConfirmPopup();
+            p.header = "Connect to Server";
+            p.description = "Select a server to connect to.\nRelease: Live world\nDevelopment: Local (debug only)";
+            p.textConfirm = "Release";
+            p.textCancel = "Development";
+            p.callbackConfirm = useReleaseServer;
+            p.callbackCancel = useDevelopmentServer;
+            PopupManager.open(p);
+
+            function useDevelopmentServer():void
+            {
+                Net.client.multiplayer.developmentServer = "127.0.0.1:8184";
+                joinRoom();
+            }
+
+            function useReleaseServer():void
+            {
+                joinRoom();
+            }
+        }
         ]]></fx:Script>
 
     <s:Group id="groupScreens"
@@ -173,6 +197,9 @@
                       verticalAlign="middle">
                 <s:Label text="Chaos Arena"/>
                 <s:Spacer width="100%"/>
+                <s:Button id="buttonToggleConnection"
+                          label="Connect"
+                          click="onButtonToggleConnection(event)"/>
                 <s:Button label="Console"
                           icon="{Icons.Settings}"
                           click="onButtonConsole(event)"/>
