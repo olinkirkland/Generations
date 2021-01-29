@@ -85,7 +85,7 @@
 
         private function joinRoom():void
         {
-            Net.client.multiplayer.createJoinRoom("", "Game", true, {}, {}, handleJoin, handleError);
+            Net.client.multiplayer.createJoinRoom("myRoom", "Game", true, {}, {}, handleJoin, handleError);
         }
 
         private function handleJoin(connection:Connection):void
@@ -98,11 +98,11 @@
         {
             switch (m.type)
             {
-                case "Chat":
-                    Console.instance.log("Player " + m.getString(0) + ": " + m.getString(1));
-                    break;
+//                case "Chat":
+//                    Console.instance.log("Player " + m.getString(0) + ": " + m.getString(1));
+//                    break;
                 default:
-                    Console.instance.log(JSON.stringify(m));
+                    Console.instance.log(m.toString());
                     break;
             }
         }
