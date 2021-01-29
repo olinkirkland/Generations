@@ -2,8 +2,9 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
                xmlns:s="library://ns.adobe.com/flex/spark"
                creationComplete="onCreationComplete(event)"
-               width="700"
-               height="500">
+               frameRate="60"
+               width="900"
+               height="600">
 
     <fx:Style source="/assets/css/global.css"/>
 
@@ -168,13 +169,14 @@
         <!--        <s:Spacer height="10"/>-->
 
         <s:Panel width="100%">
-            <s:VGroup width="100%"
+            <s:HGroup width="100%"
                       verticalAlign="middle">
                 <s:Label text="Chaos Arena"/>
+                <s:Spacer width="100%"/>
                 <s:Button label="Console"
                           icon="{Icons.Settings}"
                           click="onButtonConsole(event)"/>
-            </s:VGroup>
+            </s:HGroup>
         </s:Panel>
 
     </s:VGroup>
