@@ -8,11 +8,11 @@
         import mx.events.FlexEvent;
 
         public var callbackConfirm:Function = null;
-        public var callbackCancel:Function  = null;
-        public var header:String            = "Confirm decision";
-        public var description:String       = "Are you sure?";
-        public var textConfirm:String       = "Confirm";
-        public var textCancel:String        = "Cancel";
+        public var callbackCancel:Function = null;
+        public var header:String = "Confirm decision";
+        public var description:String = "Are you sure?";
+        public var textConfirm:String = "Confirm";
+        public var textCancel:String = "Cancel";
 
         override public function onCreationComplete(event:FlexEvent):void
         {
@@ -41,23 +41,23 @@
             <s:Label id="labelHeader"
                      text="{header}"
                      width="100%"
-                     styleName="header" />
+                     styleName="header"/>
         </s:HGroup>
 
         <s:Panel width="100%">
             <s:Label id="labelDescription"
                      text="{description}"
-                     width="100%" />
+                     width="100%"/>
         </s:Panel>
 
         <s:HGroup width="100%"
                   horizontalAlign="right">
             <s:Button id="buttonCancel"
                       label="{textCancel}"
-                      click="cancelAndClose(event)" />
+                      click="cancelAndClose(event)"/>
             <s:Button id="buttonConfirm"
                       label="{textConfirm}"
-                      click="confirmAndClose(event)" />
+                      click="confirmAndClose(event)"/>
         </s:HGroup>
 
     </s:VGroup>

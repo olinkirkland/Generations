@@ -28,6 +28,7 @@
         import ui.popups.ConfirmPopup;
 
         import ui.popups.ConsolePopup;
+        import ui.popups.InfoPopup;
         import ui.popups.Popup;
 
         private function onCreationComplete(event:FlexEvent):void
@@ -68,6 +69,7 @@
         private function joinRoom():void
         {
             buttonToggleConnection.enabled = false;
+            buttonToggleConnection.label = "Connecting...";
             Net.client.multiplayer.createJoinRoom("myRoom", "Game", true, {}, {}, handleJoin, handleError);
         }
 
@@ -83,8 +85,10 @@
 
         private function handleDisconnect():void
         {
-            Net.connection.removeMessageHandler("*", handleMessages);
+            if (Net.connection)
+                Net.connection.removeMessageHandler("*", handleMessages);
             buttonToggleConnection.label = "Connect";
+            buttonToggleConnection.enabled = true;
         }
 
         private function handleMessages(m:Message):void
@@ -99,7 +103,10 @@
 
         private function handleError(error:PlayerIOError):void
         {
-            Console.instance.log(JSON.stringify(error));
+            handleDisconnect();
+            var p:InfoPopup = new InfoPopup();
+            p.text = JSON.stringify(error.message);
+            PopupManager.open(p);
         }
 
         private function openPopup(panel:Popup):void
@@ -136,7 +143,7 @@
 
         private function onButtonToggleConnection(event:MouseEvent):void
         {
-            if (Net.connection.connected)
+            if (Net.connection && Net.connection.connected)
             {
                 Net.connection.disconnect();
                 handleDisconnect();
@@ -165,6 +172,7 @@
 
             function useReleaseServer():void
             {
+                Net.client.multiplayer.developmentServer = null;
                 joinRoom();
             }
         }
@@ -180,23 +188,13 @@
               height="100%"
               horizontalAlign="center"
               padding="10">
-        <!--        <s:Button label="Hello World"-->
-        <!--                  icon="{Icons.Settings}"-->
-        <!--                  click="onButtonClickHelloWorld(event)"/>-->
-        <!--        <s:Button label="Hello World Disabled"-->
-        <!--                  icon="{Icons.Settings}"-->
-        <!--                  enabled="false"/>-->
-        <!--        <s:Label text="Hello World"/>-->
-        <!--        <s:TextInput skinClass="skins.TextInputSkin"-->
-        <!--                     width="100"-->
-        <!--                     prompt="test"/>-->
-        <!--        <s:Spacer height="10"/>-->
 
         <s:Panel width="100%">
             <s:HGroup width="100%"
                       verticalAlign="middle">
                 <s:Label text="Chaos Arena"/>
                 <s:Spacer width="100%"/>
+                <s:Label id="labelConnection"/>
                 <s:Button id="buttonToggleConnection"
                           label="Connect"
                           click="onButtonToggleConnection(event)"/>
