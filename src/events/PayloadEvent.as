@@ -4,8 +4,6 @@ package events
 
     public class PayloadEvent extends Event
     {
-        public static var DELETE:String = "delete";
-
         public var payload:*;
 
         public function PayloadEvent(type:String, payload:* = null, bubbles:Boolean = false, cancelable:Boolean = false)

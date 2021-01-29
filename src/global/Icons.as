@@ -22,5 +22,8 @@ package global
 
         [Embed(source="/assets/icons/exit.png")]
         public static const Exit:Class;
+
+        [Embed(source="/assets/icons/enter.png")]
+        public static const Enter:Class;
     }
 }

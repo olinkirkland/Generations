@@ -6,6 +6,7 @@
 
     <fx:Script><![CDATA[
         import global.Icons;
+        import global.Net;
 
         import logic.Console;
         import logic.PopupManager;
@@ -27,27 +28,54 @@
             else
                 PopupManager.close();
         }
+
+        private function onClickButtonSend(event:MouseEvent):void
+        {
+            sendCommand();
+        }
+
+        private function onKeyDown(event:KeyboardEvent):void
+        {
+            if (event.keyCode == Keyboard.ENTER)
+                sendCommand();
+        }
+
+        private function sendCommand():void
+        {
+            var command:String = inputConsole.text;
+            inputConsole.text = "";
+            Net.connection.send("Chat", command);
+        }
         ]]>
     </fx:Script>
 
-    <s:VGroup horizontalAlign="center">
-        <s:HGroup width="100%">
+    <s:VGroup width="500"
+              height="400"
+              horizontalAlign="center">
+        <s:HGroup width="100%"
+                  verticalAlign="middle">
             <s:Label text="Console"/>
+            <s:Spacer width="100%"/>
             <s:Button id="buttonClose"
                       icon="{Icons.Exit}"
-                      label="Close"
                       click="onClickButtonClose(event)"/>
         </s:HGroup>
 
         <s:List id="listConsole"
                 width="100%"
-                height="100%"/>
+                height="100%"
+                horizontalScrollPolicy="off"
+                borderVisible="false"/>
         <s:HGroup width="100%"
                   horizontalAlign="center">
             <s:TextInput id="inputConsole"
                          skinClass="skins.TextInputSkin"
-                         width="200"
-                         prompt="Command"/>
+                         width="100%"
+                         prompt="Command"
+                         keyDown="onKeyDown(event)"/>
+            <s:Button id="buttonSend"
+                      icon="{Icons.Enter}"
+                      click="onClickButtonSend(event)"/>
         </s:HGroup>
     </s:VGroup>
 

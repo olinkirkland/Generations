@@ -1,6 +1,6 @@
 package global {
     public class Rand {
-        // Global
+        // Net
         public static var rand:Rand;
 
         public var seed:Number;
