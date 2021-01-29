@@ -23,6 +23,8 @@
         import spark.events.ElementExistenceEvent;
         import spark.events.TextOperationEvent;
 
+        import ui.popups.Popup;
+
         public var seedPhrase:String = Util.randomSeedPhrase();
 
         private function onCreationComplete(event:FlexEvent):void

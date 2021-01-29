@@ -15,6 +15,10 @@
 
         import spark.events.ElementExistenceEvent;
 
+        import ui.popups.ConfirmPopup;
+
+        import ui.popups.Popup;
+
         import ui.renderers.RNBundleItemRenderer;
 
         public static var EXIT:String = "exit";

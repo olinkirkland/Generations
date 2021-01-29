@@ -3,27 +3,24 @@ package global
     public class Icons
     {
         /**
-         * Tray
-         */
-        [Embed(source="/assets/icons/tray/normal.png")]
-        public static const TrayNormal:Class;
-
-        /**
          * App
          */
-        [Embed(source="/assets/icons/app/switch-off.png")]
+        [Embed(source="/assets/icons/switch-off.png")]
         public static const SwitchOff:Class;
 
-        [Embed(source="/assets/icons/app/switch-on.png")]
+        [Embed(source="/assets/icons/switch-on.png")]
         public static const SwitchOn:Class;
 
-        [Embed(source="/assets/icons/app/hide.png")]
+        [Embed(source="/assets/icons/hide.png")]
         public static const Hide:Class;
 
-        [Embed(source="/assets/icons/app/settings.png")]
+        [Embed(source="/assets/icons/settings.png")]
         public static const Settings:Class;
 
-        [Embed(source="/assets/icons/app/exit.png")]
+        [Embed(source="/assets/icons/spinner.png")]
+        public static const Spinner:Class;
+
+        [Embed(source="/assets/icons/exit.png")]
         public static const Exit:Class;
     }
 }

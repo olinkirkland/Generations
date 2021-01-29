@@ -1,18 +1,134 @@
 <?xml version="1.0"?>
-<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark">
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+               xmlns:s="library://ns.adobe.com/flex/spark"
+               creationComplete="onCreationComplete(event)">
 
     <fx:Style source="/assets/css/global.css"/>
 
     <fx:Script><![CDATA[
-        import global.Icons;
-        ]]></fx:Script>
-    <s:VGroup width="100%" height="100%" horizontalAlign="center" verticalAlign="middle" padding="10">
+        import events.PopupEvent;
 
-        <s:Button label="Hello World" icon="{Icons.Settings}"/>
+        import global.Color;
+        import global.Icons;
+
+        import logic.PopupManager;
+
+        import logic.Signal;
+
+        import mx.events.FlexEvent;
+
+        import spark.events.ElementExistenceEvent;
+
+        import ui.popups.InfoPopup;
+
+        import ui.popups.Popup;
+
+        private function onCreationComplete(event:FlexEvent):void
+        {
+            addEventListeners();
+        }
+
+        private function addEventListeners():void
+        {
+            Signal.instance.addEventListener(PopupEvent.OPEN, function (event:PopupEvent):void
+            {
+                openPopup(event.popup);
+            });
+
+            Signal.instance.addEventListener(PopupEvent.CLOSE, function (event:PopupEvent):void
+            {
+                closePopup();
+            });
+        }
+
+        private function openPopup(panel:Popup):void
+        {
+            // Close existing popups
+            while (groupPopups.numElements > 0)
+                Popup(groupPopups.getElementAt(0)).close();
+
+            groupPopups.addElement(panel);
+        }
+
+        private function closePopup():void
+        {
+            // Close all existing popups
+            // Expect only one popup at a time since popups are designed to be modal only
+            popupModalRectangle.visible = false;
+            while (groupPopups.numElements > 0)
+                Popup(groupPopups.getElementAt(0)).close();
+        }
+
+        private function onPopupAddedOrRemoved(event:ElementExistenceEvent):void
+        {
+            callLater(function ():void
+            {
+                popupModalRectangle.includeInLayout = popupModalRectangle.visible = groupPopups.numElements > 0;
+            });
+        }
+
+        private function onButtonClickHelloWorld(event:MouseEvent):void
+        {
+            var p:InfoPopup = new InfoPopup();
+            p.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+            PopupManager.open(p);
+        }
+        ]]></fx:Script>
+
+    <s:Group id="groupScreens"
+             width="100%"
+             height="100%">
+    </s:Group>
+
+
+    <s:VGroup width="100%"
+              height="100%"
+              horizontalAlign="center"
+              verticalAlign="middle"
+              padding="10">
+
+        <s:Button label="Hello World"
+                  icon="{Icons.Settings}"
+                  click="onButtonClickHelloWorld(event)"/>
+        <s:Button label="Hello World Disabled"
+                  icon="{Icons.Settings}"
+                  enabled="false"/>
         <s:Label text="Hello World"/>
+        <s:TextInput skinClass="skins.TextInputSkin"
+                     width="100"
+                     prompt="test"/>
         <s:Spacer height="10"/>
-        <s:Label width="100%"
-                 text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+        <s:Panel width="100%">
+            <s:VGroup width="100%">
+                <s:Label width="100%"
+                         text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+            </s:VGroup>
+        </s:Panel>
 
     </s:VGroup>
+
+    <!--Modal mode rectangle for popups-->
+    <s:VGroup id="popupModalRectangle"
+              width="100%"
+              height="100%"
+              visible="false"
+              includeInLayout="false">
+        <s:Rect width="100%"
+                height="100%">
+            <s:fill>
+                <s:SolidColor color="{Color.black}"
+                              alpha=".4"/>
+            </s:fill>
+        </s:Rect>
+    </s:VGroup>
+
+    <!--Popup layer-->
+    <s:VGroup id="groupPopups"
+              elementAdd="onPopupAddedOrRemoved(event)"
+              elementRemove="onPopupAddedOrRemoved(event)"
+              width="100%"
+              height="100%"
+              padding="50"
+              horizontalAlign="center"
+              verticalAlign="middle"/>
 </s:Application>

@@ -17,11 +17,10 @@
 
         import mx.events.FlexEvent;
 
-        private function onCreationComplete(event:FlexEvent):void
-        {
+        private function onCreationComplete(event:FlexEvent):void {
             // Icon color white
-            var t:ColorTransform                 = iconDisplay.transform.colorTransform;
-            t.color                              = Color.darkBody;
+            var t:ColorTransform = iconDisplay.transform.colorTransform;
+            t.color = Color.darkBody;
             iconDisplay.transform.colorTransform = t;
 
             if (Label(labelDisplay).text.length == 0)
@@ -30,11 +29,11 @@
         ]]></fx:Script>
 
     <s:states>
-        <s:State name="normal" />
-        <s:State name="disabled" />
-        <s:State name="down" />
-        <s:State name="over" />
-        <s:State name="up" />
+        <s:State name="normal"/>
+        <s:State name="disabled"/>
+        <s:State name="down"/>
+        <s:State name="over"/>
+        <s:State name="up"/>
     </s:states>
 
     <s:Group height="30">
@@ -49,7 +48,7 @@
                               alpha.disabled="0"
                               alpha.up=".1"
                               alpha.over=".2"
-                              alpha.down=".3" />
+                              alpha.down=".3"/>
             </s:fill>
         </s:Rect>
 
@@ -65,11 +64,12 @@
                            width="16"
                            height="16"
                            smooth="true"
-                           alpha=".8" />
+                           alpha.normal=".8"
+                           alpha.disabled=".5"/>
 
             <s:Label id="labelDisplay"
                      alpha.normal="1"
-                     alpha.disabled=".5" />
+                     alpha.disabled=".5"/>
 
         </s:HGroup>
 

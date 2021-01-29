@@ -39,7 +39,7 @@ s|TextInput {
 }
 
 s|RichEditableText {
-    fontFamily: Karla;
+    fontFamily: Body;
     color: #000000;
     fontSize: 12;
     paddingTop: 1;

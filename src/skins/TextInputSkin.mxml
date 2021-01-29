@@ -13,10 +13,10 @@
 	</fx:Metadata>
 
     <s:states>
-        <s:State name="normal" />
-        <s:State name="disabled" />
-        <s:State name="normalWithPrompt" />
-        <s:State name="disabledWithPrompt" />
+        <s:State name="normal"/>
+        <s:State name="disabled"/>
+        <s:State name="normalWithPrompt"/>
+        <s:State name="disabledWithPrompt"/>
     </s:states>
 
     <fx:Script><![CDATA[
@@ -43,7 +43,7 @@
                                     color="{Color.darkBody}"
                                     alpha.normalWithPrompt=".2"
                                     alpha.normal=".2"
-                                    alpha.disabled="0" />
+                                    alpha.disabled="0"/>
             </s:stroke>
         </s:Rect>
 
@@ -59,7 +59,7 @@
                                height="16"
                                smooth="true"
                                visible="{iconDisplay.source}"
-                               includeInLayout="{iconDisplay.source}" />
+                               includeInLayout="{iconDisplay.source}"/>
 
                 <s:Group id="promptGroup">
                     <s:Rect width="100%"
@@ -68,7 +68,7 @@
                             radiusY="3">
                         <s:fill>
                             <s:SolidColor color="{Color.black}"
-                                          alpha=".05" />
+                                          alpha=".05"/>
                         </s:fill>
                     </s:Rect>
                     <s:HGroup paddingLeft="5"
@@ -76,7 +76,7 @@
                               paddingRight="5"
                               paddingBottom="3">
                         <s:Label id="promptDisplay"
-                                 fontStyle="normal" />
+                                 fontStyle="normal"/>
                     </s:HGroup>
                 </s:Group>
 
@@ -84,7 +84,7 @@
             </s:HGroup>
 
             <s:RichEditableText id="textDisplay"
-                                width="100%" />
+                                width="100%"/>
         </s:HGroup>
 
     </s:Group>
