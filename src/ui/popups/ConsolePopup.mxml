@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<popups:Popup xmlns:fx="http://ns.adobe.com/mxml/2009"
+              xmlns:popups="ui.popups.*"
+              xmlns:s="library://ns.adobe.com/flex/spark"
+              skinClass="skins.PanelSkinWithShadow">
+
+    <fx:Script><![CDATA[
+        import global.Icons;
+
+        import logic.Console;
+        import logic.PopupManager;
+
+        import mx.events.FlexEvent;
+
+        public var popupOnClose:Popup;
+
+        override public function onCreationComplete(event:FlexEvent):void
+        {
+            super.onCreationComplete(event);
+            listConsole.dataProvider = Console.history;
+        }
+
+        private function onClickButtonClose(event:MouseEvent):void
+        {
+            if (popupOnClose)
+                PopupManager.open(popupOnClose);
+            else
+                PopupManager.close();
+        }
+        ]]>
+    </fx:Script>
+
+    <s:VGroup horizontalAlign="center">
+        <s:HGroup width="100%">
+            <s:Label text="Console"/>
+            <s:Button id="buttonClose"
+                      icon="{Icons.Exit}"
+                      label="Close"
+                      click="onClickButtonClose(event)"/>
+        </s:HGroup>
+
+        <s:List id="listConsole"
+                width="100%"
+                height="100%"/>
+        <s:HGroup width="100%"
+                  horizontalAlign="center">
+            <s:TextInput id="inputConsole"
+                         skinClass="skins.TextInputSkin"
+                         width="200"
+                         prompt="Command"/>
+        </s:HGroup>
+    </s:VGroup>
+
+</popups:Popup>

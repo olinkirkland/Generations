@@ -11,6 +11,8 @@
         import global.Color;
         import global.Icons;
 
+        import logic.Console;
+
         import logic.PopupManager;
 
         import logic.Signal;
@@ -23,14 +25,14 @@
 
         import spark.events.ElementExistenceEvent;
 
+        import ui.popups.ConsolePopup;
+
         import ui.popups.InfoPopup;
 
         import ui.popups.Popup;
 
         private function onCreationComplete(event:FlexEvent):void
         {
-            listConsole.dataProvider = new ArrayCollection();
-
             addEventListeners();
         }
 
@@ -53,17 +55,17 @@
         {
             var serverId:String = "generations-lrcaoga3v0fyoyea42pza";
 
-            //This connects us to our game server
+            // This connects us to our game server
 
             PlayerIO.connect(stage, serverId, "public", "GuestUser", "", null, handleConnect, handleError);
 
             // Called on successful connection
             function handleConnect(client:Client)
             {
-                trace("Connected to server");
+                Console.instance.log("Connected to server");
 
                 //Connect to the local development server instead of Player.IO servers.
-                client.multiplayer.developmentServer = "127.0.0.1:8184";
+                //client.multiplayer.developmentServer = "127.0.0.1:8184";
 
                 //Makes us join or create the room "test"
                 client.multiplayer.createJoinRoom("", // Room id. If set to null a random roomid is used
@@ -81,7 +83,7 @@
                 //Send "Hello" to the server
                 connection.send("Hello World");
 
-                //Listen for the "hello world" message and trace out when it arrives
+                //Listen for the "hello world" message and Console.instance.log( out when it arrives
                 connection.addMessageHandler("*", handleMessages);
             }
 
@@ -90,20 +92,15 @@
                 switch (m.type)
                 {
                     default:
-                        log(JSON.stringify(m));
+                        Console.instance.log(JSON.stringify(m));
                         break;
                 }
             }
 
             function handleError(error:PlayerIOError)
             {
-                trace(JSON.stringify(error));
+                Console.instance.log(JSON.stringify(error));
             }
-        }
-
-        private function log(str:String):void
-        {
-            listConsole.dataProvider.addItem(str);
         }
 
 
@@ -133,10 +130,9 @@
             });
         }
 
-        private function onButtonClickHelloWorld(event:MouseEvent):void
+        private function onButtonConsole(event:MouseEvent):void
         {
-            var p:InfoPopup = new InfoPopup();
-            p.text = "Hello!";
+            var p:ConsolePopup = new ConsolePopup();
             PopupManager.open(p);
         }
         ]]></fx:Script>
@@ -150,9 +146,7 @@
     <s:VGroup width="100%"
               height="100%"
               horizontalAlign="center"
-              verticalAlign="middle"
               padding="10">
-
         <!--        <s:Button label="Hello World"-->
         <!--                  icon="{Icons.Settings}"-->
         <!--                  click="onButtonClickHelloWorld(event)"/>-->
@@ -167,11 +161,10 @@
 
         <s:Panel width="100%">
             <s:VGroup width="100%">
-                <s:Label width="100%"
-                         text="Connection"/>
-                <s:List id="listConsole"
-                        width="100%"
-                        height="100%"/>
+                <s:Label text="Chaos Arena"/>
+                <s:Button label="Console"
+                          icon="{Icons.Settings}"
+                          click="onButtonConsole(event)"/>
             </s:VGroup>
         </s:Panel>
 
