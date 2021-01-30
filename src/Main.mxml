@@ -9,6 +9,7 @@
     <fx:Style source="/assets/css/global.css"/>
 
     <fx:Script><![CDATA[
+        import events.GameEvent;
         import events.PopupEvent;
 
         import global.Color;
@@ -16,6 +17,7 @@
         import global.Net;
 
         import logic.Console;
+        import logic.GameData;
         import logic.PopupManager;
         import logic.Signal;
 
@@ -24,6 +26,8 @@
         import playerio.*;
 
         import spark.events.ElementExistenceEvent;
+
+        import ui.LogType;
 
         import ui.popups.ConfirmPopup;
 
@@ -95,8 +99,29 @@
         {
             switch (m.type)
             {
+                case "UserJoined":
+                    // A user joined
+                    GameData.instance.addPlayer(m.getInt(0), m.getString(1));
+                    break;
+                case "UserLeft":
+                    // A user left
+                    GameData.instance.removePlayer(m.getInt(0));
+                    break;
+                case "Identify":
+                    // Server provides you your id and name
+                    GameData.instance.myId = m.getInt(0);
+                    GameData.instance.addPlayer(m.getInt(0), m.getString(1));
+                    break;
+                case "NameChange":
+                    // A user changed their name
+                    GameData.instance.getPlayer(m.getInt(0)).name = m.getString(1);
+                    Signal.instance.dispatchEvent(new GameEvent(GameEvent.USER_CHANGED));
+                    break;
+                case "Chat":
+                    Console.instance.log(m, LogType.CHAT);
+                    break;
                 default:
-                    Console.instance.log(m.toString());
+                    trace(m.toString());
                     break;
             }
         }

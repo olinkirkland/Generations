@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+                xmlns:s="library://ns.adobe.com/flex/spark"
+                creationComplete="onCreationComplete(event)"
+                autoDrawBackground="false"
+                width="100%">
+    <fx:Script><![CDATA[
+        import global.Color;
+        import global.Util;
+
+        import logic.GameData;
+
+        import mx.events.FlexEvent;
+
+        import playerio.Message;
+
+        import ui.LogType;
+
+        private function onCreationComplete(event:FlexEvent):void
+        {
+        }
+
+        override public function set data(value:Object):void
+        {
+            if (!value)
+                return;
+
+            // Default
+            if (!value.type)
+                value.type = LogType.INFO;
+
+            if (value.entry is String)
+                value = value.entry;
+
+            if (value is String)
+            {
+                // Is just a string
+                groupPlayerName.visible = groupPlayerName.includeInLayout = false;
+                labelMessage.text = value as String;
+                return;
+            }
+
+            var entry:Message = value.entry;
+
+            switch (value.type)
+            {
+                case LogType.CHAT:
+                    groupPlayerName.visible = groupPlayerName.includeInLayout = true;
+                    var playerId:int = entry.getInt(0);
+                    var playerName:String = playerId > 0 ? GameData.instance.getPlayer(playerId).name : "Server";
+                    labelPlayerName.text = playerName;
+                    labelMessage.text = entry.getString(1);
+                    playerNameColor.color = (playerId > 0) ? Color.stringToColor(playerName) : Color.black;
+                    break;
+                case LogType.INFO:
+                    groupPlayerName.visible = groupPlayerName.includeInLayout = false;
+                    labelMessage.text = value.entry;
+                    break;
+            }
+        }
+        ]]>
+    </fx:Script>
+
+    <s:VGroup width="100%"
+              bottom="5">
+        <s:Panel width="100%"
+                 skinClass="skins.PanelSkinBlackTransparent">
+
+            <s:VGroup width="100%">
+
+                <s:Group id="groupPlayerName">
+                    <s:Rect width="100%"
+                            height="100%"
+                            radiusX="3"
+                            radiusY="3">
+                        <s:fill>
+                            <s:SolidColor id="playerNameColor"
+                                          alpha=".1"/>
+                        </s:fill>
+                    </s:Rect>
+                    <s:HGroup paddingLeft="5"
+                              paddingTop="3"
+                              paddingRight="5"
+                              paddingBottom="3">
+                        <s:Label id="labelPlayerName"
+                                 fontStyle="normal"
+                                 fontWeight="bold"/>
+                    </s:HGroup>
+                </s:Group>
+
+
+                <s:Label id="labelMessage"
+                         width="100%"/>
+            </s:VGroup>
+
+        </s:Panel>
+    </s:VGroup>
+
+</s:ItemRenderer>

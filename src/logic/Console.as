@@ -25,9 +25,9 @@ package logic
             return _instance;
         }
 
-        public function log(str:String):void
+        public function log(entry:*, type:String = null):void
         {
-            history.addItem(str);
+            history.addItem({entry: entry, type: type});
         }
     }
 }

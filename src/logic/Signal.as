@@ -20,11 +20,5 @@ package logic
                 new Signal();
             return _instance;
         }
-
-        public function dispatch(event:Event):void
-        {
-            // Dispatch
-            dispatchEvent(event);
-        }
     }
 }

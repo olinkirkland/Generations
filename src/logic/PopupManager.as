@@ -8,12 +8,12 @@ package logic
     {
         public static function open(popup:Popup):void
         {
-            Signal.instance.dispatch(new PopupEvent(PopupEvent.OPEN, popup));
+            Signal.instance.dispatchEvent(new PopupEvent(PopupEvent.OPEN, popup));
         }
 
         public static function close():void
         {
-            Signal.instance.dispatch(new PopupEvent(PopupEvent.CLOSE));
+            Signal.instance.dispatchEvent(new PopupEvent(PopupEvent.CLOSE));
         }
     }
 }
