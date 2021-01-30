@@ -60,16 +60,20 @@
             border.space = space;
 
             // Generate some random objects!
-            for (var i:uint = 0; i < 100; i++) {
+            for (var i:uint = 0; i < 100; i++)
+            {
                 var body:Body = new Body();
 
                 // Add random one of either a Circle, Box or Pentagon.
-                if (Math.random() < 0.33) {
+                if (Math.random() < 0.33)
+                {
                     body.shapes.add(new Circle(20));
 
-                } else if (Math.random() < 0.5) {
+                } else if (Math.random() < 0.5)
+                {
                     body.shapes.add(new Polygon(Polygon.box(40, 40)));
-                } else {
+                } else
+                {
                     body.shapes.add(new Polygon(Polygon.regular(20, 20, 5)));
                 }
 
@@ -78,7 +82,7 @@
                 body.space = space;
             }
 
-            //Add the player body
+            // Add the player body
             playerBody = new Body();
             playerBody.shapes.add(new Circle(35));
             playerBody.position.setxy(Math.random() * w, Math.random() * h);
@@ -133,7 +137,7 @@
                 {
                     // Create new element
                     var body:Body = t.body;
-                    body.shapes.add(new Polygon(Polygon.rect(0, 0, 25, 25)));
+                    body.shapes.add(new Polygon(Polygon.box(50, 50, false)));
                     body.space = space;
 
                     bodies[t.id] = body;
