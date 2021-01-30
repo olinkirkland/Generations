@@ -86,6 +86,7 @@
             <s:Label text="Console"/>
             <s:Spacer width="100%"/>
             <s:Button id="buttonClose"
+                      label="Close"
                       icon="{Icons.Exit}"
                       click="onButtonClose(event)"/>
         </s:HGroup>

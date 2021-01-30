@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<mx:UIComponent xmlns:fx="http://ns.adobe.com/mxml/2009"
+                xmlns:mx="library://ns.adobe.com/flex/mx"
+                creationComplete="onCreationComplete(event)">
+    <fx:Script><![CDATA[
+        import mx.events.FlexEvent;
+
+        // public var foo here
+        // private var foo here
+
+        private function onCreationComplete(event:FlexEvent):void
+        {
+            // add stuff like this here
+            var spr:Sprite = new Sprite();
+            spr.graphics.beginFill(0x00ff00);
+            spr.graphics.drawCircle(Math.random() * this.width, Math.random() * this.height, 50);
+            spr.graphics.endFill();
+            addChild(spr);
+        }
+        ]]></fx:Script>
+</mx:UIComponent>
