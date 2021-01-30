@@ -52,6 +52,7 @@ package logic
         {
             myId = -1;
             playersById = {};
+            entitiesById = {};
         }
 
         public function createGameState():String
