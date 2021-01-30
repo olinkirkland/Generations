@@ -12,6 +12,7 @@
         public var description:String = "Input text.";
         public var textConfirm:String = "Confirm";
         public var textCancel:String = "Cancel";
+        public var textPrompt:String = "Text";
 
         override public function onCreationComplete(event:FlexEvent):void
         {
@@ -48,10 +49,10 @@
                          text="{description}"
                          width="100%"/>
                 <s:TextInput id="input"
+                             prompt="{textPrompt}"
                              width="100%"
                              left="10"
-                             right="10"
-                             skinClass="skins.TextInputSkinCenteredNoPrompt"/>
+                             right="10"/>
             </s:VGroup>
         </s:Panel>
 

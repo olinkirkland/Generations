@@ -3,19 +3,95 @@
                 xmlns:mx="library://ns.adobe.com/flex/mx"
                 creationComplete="onCreationComplete(event)">
     <fx:Script><![CDATA[
+        import events.GameEvent;
+
+        import global.Color;
+
+        import logic.Entity;
+
+        import logic.GameData;
+
+        import logic.Signal;
+
         import mx.events.FlexEvent;
 
-        // public var foo here
-        // private var foo here
+        import nape.geom.Vec2;
+        import nape.phys.Body;
+        import nape.phys.BodyType;
+        import nape.shape.Polygon;
+        import nape.space.Space;
+        import nape.util.BitmapDebug;
+
+        private var space:Space;
+        private var debug:BitmapDebug;
+
+        private var bodies:Object = {};
 
         private function onCreationComplete(event:FlexEvent):void
         {
-            // add stuff like this here
-            var spr:Sprite = new Sprite();
-            spr.graphics.beginFill(0x00ff00);
-            spr.graphics.drawCircle(Math.random() * this.width, Math.random() * this.height, 50);
-            spr.graphics.endFill();
-            addChild(spr);
+            // Signals
+            Signal.instance.addEventListener(GameEvent.GAME_STATE_UPDATE, onGameStateUpdate);
+
+            addEventListener(Event.ENTER_FRAME, onEnterFrame);
+
+            space = new Space(new Vec2(0, 600));
+
+            debug = new BitmapDebug(width, height, Color.black, true);
+            addChild(debug.display);
+
+            var border:Body = new Body(BodyType.STATIC);
+            border.shapes.add(new Polygon(Polygon.rect(0, -400, -40, height + 400)));
+            border.shapes.add(new Polygon(Polygon.rect(width, -400, 40, height + 400)));
+            border.shapes.add(new Polygon(Polygon.rect(0, height, width, 40)));
+            border.space = space;
+        }
+
+        private function onEnterFrame(event:Event):void
+        {
+            space.step(1 / stage.frameRate);
+
+            debug.clear();
+            debug.draw(space);
+            debug.flush();
+        }
+
+        private function onGameStateUpdate(event:GameEvent):void
+        {
+            trace("######## GAME STATE UDPATE ########");
+
+            // Remove entities that need to be removed
+            for each (var body:Body in bodies)
+            {
+                var contained:Boolean = false;
+                for each (var t:Entity in GameData.instance.entities)
+                {
+                    if (t.body == body)
+                    {
+                        contained = true;
+                        break;
+                    }
+                }
+
+                if (!contained)
+                    body.space = null;
+            }
+
+            // Add or Update entities
+            for each (var t:Entity in GameData.instance.entities)
+            {
+                trace(JSON.stringify(t.toUntyped()));
+
+                if (bodies[t.id])
+                {
+                    // Update existing element
+                } else
+                {
+                    // Create new element
+                    var body:Body = t.body;
+                    body.shapes.add(new Polygon(Polygon.rect(0, 0, 25, 25)));
+                    body.space = space;
+                }
+            }
         }
         ]]></fx:Script>
 </mx:UIComponent>

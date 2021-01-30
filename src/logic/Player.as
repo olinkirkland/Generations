@@ -1,5 +1,7 @@
 package logic
 {
+    import flash.geom.Point;
+
     public class Player
     {
         public var id:int;

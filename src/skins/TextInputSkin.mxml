@@ -71,10 +71,10 @@
                                           alpha=".05"/>
                         </s:fill>
                     </s:Rect>
-                    <s:HGroup paddingLeft="5"
-                              paddingTop="3"
-                              paddingRight="5"
-                              paddingBottom="3">
+                    <s:HGroup paddingLeft="7"
+                              paddingTop="5"
+                              paddingRight="7"
+                              paddingBottom="5">
                         <s:Label id="promptDisplay"
                                  fontStyle="normal"/>
                     </s:HGroup>

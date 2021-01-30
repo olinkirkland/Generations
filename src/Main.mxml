@@ -74,6 +74,8 @@
 
         private function joinRoom():void
         {
+            GameData.instance.reset();
+
             buttonToggleConnection.enabled = false;
             buttonToggleConnection.label = "Connecting...";
             Net.client.multiplayer.createJoinRoom("myRoom", "Game", true, {}, {}, handleJoin, handleError);
@@ -89,12 +91,26 @@
             buttonToggleConnection.label = "Disconnect";
         }
 
-        private function handleDisconnect():void
+        private function handleDisconnect(showReconnectPopup:Boolean = true):void
         {
             if (Net.connection)
                 Net.connection.removeMessageHandler("*", handleMessages);
             buttonToggleConnection.label = "Connect";
             buttonToggleConnection.enabled = true;
+
+            GameData.instance.reset();
+
+            Signal.instance.dispatchEvent(new GameEvent(GameEvent.GAME_STATE_UPDATE));
+
+            if (showReconnectPopup)
+            {
+                var p:ConfirmPopup = new ConfirmPopup();
+                p.header = "Disconnected!";
+                p.description = "You disconnected. Reconnect?";
+                p.textConfirm = "Reconnect";
+                p.callbackConfirm = joinRoom;
+                PopupManager.open(p);
+            }
         }
 
         private function handleMessages(m:Message):void
@@ -121,6 +137,15 @@
                     break;
                 case "Chat":
                     Console.instance.log(m, LogType.CHAT);
+                    break;
+                case "CreateGameState":
+                    Net.connection.send("NewGameState", GameData.instance.createGameState());
+                    break;
+                case "SetGameState":
+                    GameData.instance.setGameState(m.getString(0));
+                    break;
+                case "GetGameState":
+                    Net.connection.send("NewGameState", GameData.instance.getGameState());
                     break;
                 default:
                     trace(m.toString());
@@ -173,7 +198,7 @@
             if (Net.connection && Net.connection.connected)
             {
                 Net.connection.disconnect();
-                handleDisconnect();
+                handleDisconnect(false);
             } else
             {
                 openConnectionTypePopup();
@@ -210,6 +235,7 @@
             p.header = "Name Change";
             p.description = "Enter the name you want to be called by.";
             p.callbackConfirm = requestNameChange;
+            p.textPrompt = "New Name";
             PopupManager.open(p);
         }
 
