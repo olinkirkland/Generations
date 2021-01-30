@@ -10,6 +10,7 @@
         import logic.Entity;
 
         import logic.GameData;
+        import logic.PlayerController;
 
         import logic.Signal;
 
@@ -18,6 +19,7 @@
         import nape.geom.Vec2;
         import nape.phys.Body;
         import nape.phys.BodyType;
+        import nape.shape.Circle;
         import nape.shape.Polygon;
         import nape.space.Space;
         import nape.util.BitmapDebug;
@@ -25,7 +27,14 @@
         private var space:Space;
         private var debug:BitmapDebug;
 
+
+        private var prevTimeMS:int;
+        private var simulationTime:Number;
+
         private var bodies:Object = {};
+
+        private var playerBody:Body;
+        private var playerController:PlayerController;
 
         private function onCreationComplete(event:FlexEvent):void
         {
@@ -39,11 +48,46 @@
             debug = new BitmapDebug(width, height, Color.black, true);
             addChild(debug.display);
 
+            var w:uint = 900;//stage.stageWidth;
+            var h:uint = 600;//stage.stageHeight;
+
+            // Create a static border around stage.
             var border:Body = new Body(BodyType.STATIC);
-            border.shapes.add(new Polygon(Polygon.rect(0, -400, -40, height + 400)));
-            border.shapes.add(new Polygon(Polygon.rect(width, -400, 40, height + 400)));
-            border.shapes.add(new Polygon(Polygon.rect(0, height, width, 40)));
+            border.shapes.add(new Polygon(Polygon.rect(0, 0, w, -1)));
+            border.shapes.add(new Polygon(Polygon.rect(0, h, w, 1)));
+            border.shapes.add(new Polygon(Polygon.rect(0, 0, -1, h)));
+            border.shapes.add(new Polygon(Polygon.rect(w, 0, 1, h)));
             border.space = space;
+
+            // Generate some random objects!
+            for (var i:uint = 0; i < 100; i++) {
+                var body:Body = new Body();
+
+                // Add random one of either a Circle, Box or Pentagon.
+                if (Math.random() < 0.33) {
+                    body.shapes.add(new Circle(20));
+
+                } else if (Math.random() < 0.5) {
+                    body.shapes.add(new Polygon(Polygon.box(40, 40)));
+                } else {
+                    body.shapes.add(new Polygon(Polygon.regular(20, 20, 5)));
+                }
+
+                // Set to random position on stage and add to Space.
+                body.position.setxy(Math.random() * w, Math.random() * h);
+                body.space = space;
+            }
+
+            //Add the player body
+            playerBody = new Body();
+            playerBody.shapes.add(new Circle(35));
+            playerBody.position.setxy(Math.random() * w, Math.random() * h);
+            playerBody.space = space;
+
+            // Set up fixed time step logic.
+            prevTimeMS = getTimer();
+            simulationTime = 0.0;
+            playerController = new PlayerController(playerBody, space, this);
         }
 
         private function onEnterFrame(event:Event):void

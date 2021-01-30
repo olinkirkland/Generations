@@ -14,7 +14,7 @@
             <entry library-id="fac5d7af-3fd5-4c90-8990-238b5bc01640">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-id="7894d5da-76d2-438b-9b1f-9c7dd055a7e4">
+            <entry library-id="aab08760-36f3-41f1-aff4-fada876c920b">
               <dependency linkage="Merged" />
             </entry>
           </entries>
@@ -67,7 +67,7 @@
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library type="flex">
-        <properties id="7894d5da-76d2-438b-9b1f-9c7dd055a7e4" />
+        <properties id="aab08760-36f3-41f1-aff4-fada876c920b" />
         <CLASSES>
           <root url="jar://$MODULE_DIR$/src/libs/nape-dev.swc!/" />
         </CLASSES>
