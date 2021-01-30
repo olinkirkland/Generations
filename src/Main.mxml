@@ -34,6 +34,7 @@
 
         import ui.popups.ConsolePopup;
         import ui.popups.InfoPopup;
+        import ui.popups.InputPopup;
         import ui.popups.Popup;
 
         private function onCreationComplete(event:FlexEvent):void
@@ -202,6 +203,20 @@
                 joinRoom();
             }
         }
+
+        private function onButtonChangeName(event:MouseEvent):void
+        {
+            var p:InputPopup = new InputPopup();
+            p.header = "Name Change";
+            p.description = "Enter the name you want to be called by.";
+            p.callbackConfirm = requestNameChange;
+            PopupManager.open(p);
+        }
+
+        private function requestNameChange(str:String):void
+        {
+            Net.connection.send("NameChange", str);
+        }
         ]]></fx:Script>
 
     <s:Group id="groupScreens"
@@ -216,18 +231,25 @@
               padding="10">
 
         <s:Panel width="100%">
-            <s:HGroup width="100%"
-                      verticalAlign="middle">
-                <s:Label text="Chaos Arena"/>
-                <s:Spacer width="100%"/>
-                <s:Label id="labelConnection"/>
-                <s:Button id="buttonToggleConnection"
-                          label="Connect"
-                          click="onButtonToggleConnection(event)"/>
-                <s:Button label="Console"
-                          icon="{Icons.Settings}"
-                          click="onButtonConsole(event)"/>
-            </s:HGroup>
+            <s:VGroup width="100%">
+                <s:HGroup width="100%"
+                          verticalAlign="middle">
+                    <s:Label text="Chaos Arena"/>
+                    <s:Spacer width="100%"/>
+                    <s:Label id="labelConnection"/>
+                    <s:Button id="buttonToggleConnection"
+                              label="Connect"
+                              click="onButtonToggleConnection(event)"/>
+                    <s:Button label="Console"
+                              icon="{Icons.Settings}"
+                              click="onButtonConsole(event)"/>
+                </s:HGroup>
+                <s:HGroup width="100%">
+                    <s:Spacer width="100%"/>
+                    <s:Button label="Change Name"
+                              click="onButtonChangeName(event)"/>
+                </s:HGroup>
+            </s:VGroup>
         </s:Panel>
 
         <g:GameStage width="100%"
